@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "CreateDashboard";
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function runSample() {
+            //$('#upmedia-loading').remove();
+
+            var revealSettings = new $.ig.RevealSettings(null);
+            var revealView;
+
+			revealSettings.startInEditMode = true;
+            revealView = new $.ig.RevealView("#revealView", revealSettings);
+
+            revealView.onDataSourcesRequested = function (callback) {
+
+                var samplesStoresDatasource = new $.ig.RVLocalFileDataSourceItem();
+                samplesStoresDatasource.uri("local:/stores.json");
+                var storesDsi = new $.ig.RVJsonDataSourceItem(samplesStoresDatasource);
+                storesDsi.title("Sample Stores");
+                
+                var samplesIncomesDatasource = new $.ig.RVLocalFileDataSourceItem();
+                samplesIncomesDatasource.uri("local:/incomes.json");
+                var incomesDsi = new $.ig.RVJsonDataSourceItem(samplesIncomesDatasource);
+                incomesDsi.title("Sample Incomes");
+
+                /*
+                var northWindCustomersDatasource = new $.ig.RVWebResourceDataSource();
+                northWindCustomersDatasource.id("northwindCustomersDataSource");
+                northWindCustomersDatasource.useAnonymousAuthentication(true);
+                northWindCustomersDatasource.url("http://northwind.servicestack.net/Customers.csv");
+                northWindCustomersDatasource.title("Northwind Customers");
+
+                var northWindOrdersDatasource = new $.ig.RVWebResourceDataSource();
+                northWindOrdersDatasource.id("northwindOrdersDataSource");
+                northWindOrdersDatasource.useAnonymousAuthentication(true);
+                northWindOrdersDatasource.url("http://northwind.servicestack.net/query/orders.json");
+                northWindOrdersDatasource.title("Northwind Orders");
+                */
+
+                callback(new $.ig.RevealDataSources([storesDsi, incomesDsi], true));
+            };
+        }
+    </script>
+}
