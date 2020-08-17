@@ -1,0 +1,13 @@
+<igx-grid #grid [data]="localData" 
+  [autoGenerate]="false" (onColumnInit)="onColumnInit($event)" width="100%" height="100%" [paging]="false"
+  [allowFiltering]="true" [rowSelection]="'multiple'" (onRowSelectionChange)="onRowSelectionChange($event)" [hideRowSelectors]="false"
+  [groupingExpressions]="expr"
+>
+  <igx-column [field]="'StoreId'" [header]="'ID'" [width]="'110px'"></igx-column>
+  <igx-column [field]="'StoreName'" [header]="'Store'" [width]="'240px'"></igx-column>
+  <igx-column [field]="'StoreType'" [header]="'Type'" [width]="'90px'"></igx-column>
+  <igx-column [field]="'StoreGrade'" [header]="'Grade'" [width]="'90px'"></igx-column>
+  <igx-column [field]="'State'" [header]="'State/Prov'" [width]="'140px'"></igx-column>
+  <igx-column [field]="'Country'" [header]="'Country'" [width]="'130px'"></igx-column>
+
+</igx-grid>

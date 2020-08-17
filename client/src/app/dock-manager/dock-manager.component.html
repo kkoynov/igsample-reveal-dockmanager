@@ -1,0 +1,5 @@
+<igc-dockmanager #dockManager>
+  <app-reveal #reveal slot="revealView" class="dockManagerContent" (dataPointClicked)="onDataPointClicked($event)"></app-reveal>
+  <app-home slot="floating" class="dockManagerContent"></app-home>
+  <app-store-incomes-chart #storeIncome slot="detailStoreIncomesChart" class="dockManagerContent"></app-store-incomes-chart>
+</igc-dockmanager>

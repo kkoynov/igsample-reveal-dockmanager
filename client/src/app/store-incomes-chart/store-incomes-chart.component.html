@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="options">
+    <span class="legendTitle">Legend: </span>
+    <div class="legendInline">
+        <igx-legend #legend orientation="Horizontal"></igx-legend>
+    </div>
+  </div>
+
+  <div class="chart">
+    <igx-data-chart #chart width="100%" height="100%" [dataSource]="data"
+      isHorizontalZoomEnabled="true" isVerticalZoomEnabled="true" [legend]="legend"
+    >
+      <igx-numeric-y-axis title="k USD" #yAxis></igx-numeric-y-axis>
+      <igx-category-x-axis label="StoreId" title="Selected Stores" #xAxis></igx-category-x-axis>
+
+      <igx-column-series valueMemberPath="SSRevenue" [xAxis]="xAxis" [yAxis]="yAxis" title="SS Revenue"></igx-column-series>
+      <igx-column-series valueMemberPath="SSPhCost" [xAxis]="xAxis" [yAxis]="yAxis" title="SS PhCost"></igx-column-series>
+      <igx-column-series valueMemberPath="AWRevenue" [xAxis]="xAxis" [yAxis]="yAxis" title="AW Revenue"></igx-column-series>
+      <igx-column-series valueMemberPath="AWPhCost" [xAxis]="xAxis" [yAxis]="yAxis" title="AW PhCost"></igx-column-series>
+    </igx-data-chart>
+  </div>
+</div>
