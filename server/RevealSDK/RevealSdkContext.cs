@@ -1,4 +1,4 @@
-﻿using Infragistics.Sdk;
+﻿using Reveal.Sdk;
 using System;
 using System.IO;
 using System.Reflection;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server.RevealSDK
 {
-	public class RevealSdkContext : IRevealSdkContext
+	public class RevealSdkContext : RevealSdkContextBase
     {
         private string _webRootPath;
 
@@ -15,34 +15,35 @@ namespace Server.RevealSDK
             _webRootPath = webRootPath;
         }
 
-        public IRVDataSourceProvider DataSourceProvider => new LocalSampleDataSourceProvider();
+        public override IRVDataSourceProvider DataSourceProvider => new LocalSampleDataSourceProvider();
 
-        public IRVDataProvider DataProvider => null;
+        public override IRVDataProvider DataProvider => null;
 
-        public IRVAuthenticationProvider AuthenticationProvider => null;
+        public override IRVAuthenticationProvider AuthenticationProvider => null;
 
-		public async Task<Stream> GetDashboardAsync(string dashboardId)
-		{
-            return await Task.Run(() =>
-            {
-                var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", dashboardId);
-                return new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            });
-
-        }
-
-		public async Task SaveDashboardAsync(string userId, string dashboardId, Stream dashboardStream)
+        public override Task<Dashboard> GetDashboardAsync(string dashboardId)
         {
-            await Task.Run(() => {
-								// "~" is added to the saved .rdash file. (Please overwrite manually)
-                var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~"+dashboardId);
-                using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                {
-                    dashboardStream.CopyTo(fileStream);
-                }
-            });
+            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", dashboardId);
+            using (new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                return Task.FromResult<Dashboard>(new Dashboard(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
+            }
         }
-	}
+
+
+        public override async Task SaveDashboardAsync(string userId, string dashboardId, Dashboard dashboard)
+        {
+			// "~" is added to the saved .rdash file. (Please overwrite manually)
+            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~"+dashboardId);
+            using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                (await dashboard.SerializeAsync()).CopyTo(fileStream);
+            }
+
+            return;
+        }
+
+    }
     
     internal class LocalSampleDataSourceProvider : IRVDataSourceProvider
     {

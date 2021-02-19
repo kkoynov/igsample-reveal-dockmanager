@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Server.RevealSDK;
-using Infragistics.Sdk;
+using Reveal.Sdk;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,7 +54,7 @@ namespace Server
             services.AddMvc().AddReveal().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        protected virtual IRevealSdkContext CreateSdkContext()
+        protected virtual RevealSdkContextBase CreateSdkContext()
         {
             return new RevealSdkContext(_webRootPath);
         }
