@@ -34,8 +34,7 @@
             "scripts": [
               "./node_modules/hammerjs/hammer.min.js",
               "./node_modules/jquery/dist/jquery.js",
-              "src/assets/Reveal/infragistics.reveal.js",
-              "src/assets/Reveal/infragistics.langpack.ja.js"
+              "src/assets/Reveal/infragistics.reveal.js"
             ]
           },
           "configurations": {
