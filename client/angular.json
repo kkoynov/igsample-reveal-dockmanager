@@ -29,11 +29,14 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/@infragistics/igniteui-angular/styles/igniteui-angular.css"
+              "node_modules/@infragistics/igniteui-angular/styles/igniteui-angular.css",
+              "./node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
               "./node_modules/hammerjs/hammer.min.js",
               "./node_modules/jquery/dist/jquery.js",
+              "./node_modules/dayjs/dayjs.min.js",
+              "./node_modules/quill/dist/quill.min.js",
               "src/assets/Reveal/infragistics.reveal.js"
             ]
           },

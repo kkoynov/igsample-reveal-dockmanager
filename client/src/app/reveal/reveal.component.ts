@@ -24,24 +24,9 @@ export class RevealComponent implements OnInit, AfterViewInit, OnDestroy {
 
     $.ig.RevealUtility.loadDashboard(dashboardId, (dashboard) => {
 
-      this.revealView = new $.ig.RevealView(this.el.nativeElement);
+      this.setupRevealView();
+      this.hookonVisualizationDataPointClicked()
       this.revealView.dashboard = dashboard;
-      this.revealView.canSaveAs = true;
-      this.revealView.canEdit = true;
-      this.revealView.showDataBlending = true;
-
-      this.revealView.onVisualizationDataPointClicked = (widget, cell, row) => {
-        console.log('widget', widget.title, widget);
-        //console.log('dataSpec', widget._widgetModel._dataSpec._dataSourceItem);
-        console.log('cell', cell.columnLabel, cell.value, cell.formattedValue, cell);
-        console.log("First cell in the row has label:" + row[0].columnLabel);
-
-        this.dataPointClicked.emit({
-          dataSource: widget._widgetModel._dataSpec._dataSourceItem._id,
-          widget: { id: widget.id, title: widget.title },
-          cell: { columnName: cell.columnName, value: cell.value }
-        });
-      };
 
       this.revealView.dashboard = dashboard;
     },
@@ -61,5 +46,26 @@ export class RevealComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateView() {
     if (!!this.revealView) this.revealView.updateSize();
+  }
+
+  hookonVisualizationDataPointClicked() {
+    this.revealView.onVisualizationDataPointClicked = (widget, cell, row) => {
+      console.log('widget', widget.title, widget);
+      console.log('cell', cell.columnLabel, cell.value, cell.formattedValue, cell);
+      console.log("First cell in the row has label:" + row[0].columnLabel);
+
+      this.dataPointClicked.emit({
+        dataSource: widget._widgetModel._dataSpec._dataSourceItem._id,
+        widget: { id: widget.id, title: widget.title },
+        cell: { columnName: cell.columnName, value: cell.value }
+      });
+    };
+  }
+
+  setupRevealView() {
+    this.revealView = new $.ig.RevealView(this.el.nativeElement);
+    this.revealView.canSaveAs = true;
+    this.revealView.canEdit = true;
+    this.revealView.showDataBlending = true;
   }
 }
