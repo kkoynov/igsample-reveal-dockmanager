@@ -13,7 +13,12 @@ export class AppComponent {
   constructor() {
 
     $.ig.RevealSdkSettings.setBaseUrl("https://localhost:5001/");
+    $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+      var headers = {};
+      headers["user-id"] = "demoUser";
 
+      return headers;
+    });
     WebFontLoader.load({
       active: () => {
 

@@ -66,7 +66,7 @@ namespace Server
             {
                 CachePath = @"C:\Temp2",
                 LocalFileStoragePath = Path.Combine(_webRootPath, "App_Data", "RVLocalFiles")
-            }, new RevealSdkContext(_webRootPath));
+            }, new RevealSdkContext(_webRootPath), new RevealUserContext());
 
             services.AddMvc().AddReveal().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
