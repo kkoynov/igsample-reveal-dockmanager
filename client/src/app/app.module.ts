@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { DockManagerComponent } from './dock-manager/dock-manager.component';
 import { RevealComponent } from './reveal/reveal.component';
 import { StoresGridComponent } from './stores-grid/stores-grid.component';
-import { IgxGridModule } from '@infragistics/igniteui-angular';
+import { IgxGridModule } from 'igniteui-angular';
 import { StoreIncomesChartComponent } from './store-incomes-chart/store-incomes-chart.component';
 import { IgxDataChartCoreModule } from 'igniteui-angular-charts';
 import { IgxDataChartCategoryModule } from 'igniteui-angular-charts';
@@ -21,7 +21,7 @@ import { IgxLegendModule } from 'igniteui-angular-charts';
 import { SampleDataService } from './sample-data.service';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { defineCustomElements } from '@infragistics/igniteui-dockmanager/loader';
+import { defineCustomElements } from 'igniteui-dockmanager/loader';
 defineCustomElements();
 
 @NgModule({
@@ -40,11 +40,11 @@ defineCustomElements();
     FormsModule,
     HttpClientModule,
     IgxGridModule,
-		IgxDataChartCoreModule,
+    IgxDataChartCoreModule,
     IgxDataChartCategoryModule,
     IgxDataChartStackedModule,
-		IgxDataChartInteractivityModule,
-		IgxLegendModule
+    IgxDataChartInteractivityModule,
+    IgxLegendModule
   ],
   providers: [SampleDataService],
   bootstrap: [AppComponent],

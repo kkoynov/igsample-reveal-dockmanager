@@ -1,10 +1,12 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, ComponentFactory, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
-import { IgcDockManagerLayout,
+import {
+  IgcDockManagerLayout,
   IgcDockManagerComponent,
   IgcDockManagerPane, IgcTabGroupPane, IgcContentPane,
   IgcDockManagerPaneType,
   IgcSplitPaneOrientation
-} from '@infragistics/igniteui-dockmanager';
+} from 'igniteui-dockmanager';
+import * as WebFontLoader from 'webfontloader';
 import { RevealComponent } from '../reveal/reveal.component';
 import { StoreIncomesChartComponent } from '../store-incomes-chart/store-incomes-chart.component';
 
@@ -20,7 +22,7 @@ import * as _ from 'lodash';
 export class DockManagerComponent implements OnInit, AfterViewInit {
   @ViewChild('dockManager') private el: ElementRef;
   private dockManager: IgcDockManagerComponent;
-  
+
   @ViewChild(RevealComponent) private reveal: RevealComponent;
   @ViewChild(StoreIncomesChartComponent) private storeIncomesChart: StoreIncomesChartComponent;
 
@@ -89,12 +91,13 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
       ]
     } as IgcDockManagerLayout;
 
-    this.listViewPane = this.findPane({id: 'listViewPane'}) as IgcTabGroupPane;
-    this.detailViewPane = this.findPane({id: 'detailViewPane'}) as IgcTabGroupPane;
+    this.listViewPane = this.findPane({ id: 'listViewPane' }) as IgcTabGroupPane;
+    this.detailViewPane = this.findPane({ id: 'detailViewPane' }) as IgcTabGroupPane;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.factoryStoresGrid = this.resolver.resolveComponentFactory(StoresGridComponent);
+    await this.loadRobotoFonts();
   }
 
   private findPane(predicate: any): IgcDockManagerPane {
@@ -102,7 +105,7 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
     function _findPane(collection: Array<IgcDockManagerPane>): IgcDockManagerPane {
       let f = _.find(collection, predicate);
       if (!!f) return f;
-      for(let pane of collection) {
+      for (let pane of collection) {
         if (_.has(pane, 'panes') && _.isArray(pane['panes'])) f = _findPane(pane['panes']);
         if (!!f) return f;
       }
@@ -115,19 +118,19 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
     if (!!found) return found;
     return found;
   }
-  
+
   ngAfterViewInit(): void {
     this.dockManager = this.el.nativeElement as IgcDockManagerComponent;
 
     this.dockManager.layout = JSON.parse(JSON.stringify(this.layout));
   }
-  
+
   async onDataPointClicked(data: any) {
     console.log('onDataPointClicked', data);
-    
+
     this.layout = this.dockManager.layout;
-    this.listViewPane = this.findPane({id: 'listViewPane'}) as IgcTabGroupPane;
-    this.detailViewPane = this.findPane({id: 'detailViewPane'}) as IgcTabGroupPane;
+    this.listViewPane = this.findPane({ id: 'listViewPane' }) as IgcTabGroupPane;
+    this.detailViewPane = this.findPane({ id: 'detailViewPane' }) as IgcTabGroupPane;
 
     const listId = `list-${data.cell.columnName.replace(' ', '_')}-${data.cell.value.replace(' ', '_')}`;
 
@@ -138,36 +141,36 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
       grid.instance.rowSelectionChanged.subscribe((data) => this.onStoresGridSelectionChanged(data));
       await grid.instance.loadData(filter);
       grid.location.nativeElement.setAttribute('slot', listId);
-      this.addPane(this.listViewPane, listId, {header: `${data.cell.value}: Stores`});
+      this.addPane(this.listViewPane, listId, { header: `${data.cell.value}: Stores` });
     }
 
     this.dockManager.layout = JSON.parse(JSON.stringify(this.layout));
     setTimeout(() => this.reveal.updateView(), 100);
   }
-  
+
   async onStoresGridSelectionChanged(data: any) {
     console.log('onStoresGridSelectionChanged', data);
-    
+
     this.layout = this.dockManager.layout;
-    this.listViewPane = this.findPane({id: 'listViewPane'}) as IgcTabGroupPane;
-    this.detailViewPane = this.findPane({id: 'detailViewPane'}) as IgcTabGroupPane;
+    this.listViewPane = this.findPane({ id: 'listViewPane' }) as IgcTabGroupPane;
+    this.detailViewPane = this.findPane({ id: 'detailViewPane' }) as IgcTabGroupPane;
 
     if (!_.isEmpty(data)) {
       const selectedStores = _.map(data, 'StoreId');
       await this.storeIncomesChart.loadData(selectedStores);
-      this.addPane(this.detailViewPane, 'detailStoreIncomesChart', {header: 'Store incomes'});
+      this.addPane(this.detailViewPane, 'detailStoreIncomesChart', { header: 'Store incomes' });
     }
     else {
       this.removePane(this.detailViewPane, 'detailStoreIncomesChart');
     }
-    
+
     this.dockManager.layout = JSON.parse(JSON.stringify(this.layout));
     setTimeout(() => this.reveal.updateView(), 100);
   }
 
   private addPane(group: IgcTabGroupPane, contentId: string, opts?: Object): boolean {
     let added = false;
-    if (!this.findPane({id: contentId})) {
+    if (!this.findPane({ id: contentId })) {
       group.panes.push(_.assign(opts || {}, {
         type: IgcDockManagerPaneType.contentPane,
         id: contentId,
@@ -176,18 +179,35 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
       added = true;
     }
     if (_.has(group, 'panes')) {
-      group.selectedIndex = _.findIndex(group.panes, {id: contentId});
+      group.selectedIndex = _.findIndex(group.panes, { id: contentId });
     }
     return added;
   }
 
   private removePane(group: IgcTabGroupPane, contentId: string): boolean {
     let removed = false;
-    if (this.findPane({id: contentId})) {
-      const idx = _.findIndex(group.panes, {id: contentId});
+    if (this.findPane({ id: contentId })) {
+      const idx = _.findIndex(group.panes, { id: contentId });
       group.panes.splice(idx, 1);
       removed = true;
     }
     return removed;
+  }
+
+  async loadRobotoFonts() {
+    console.log("loadRobotoFonts");
+    return new Promise<void>((resolve, reject) => {
+      WebFontLoader.load({
+        active: () => {
+          resolve();
+        },
+        inactive: () => {
+          reject();
+        },
+        custom: {
+          families: ['Roboto-Regular', 'Roboto-Bold', 'Roboto-Light', 'Roboto-Medium']
+        }
+      });
+    });
   }
 }

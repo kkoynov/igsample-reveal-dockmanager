@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as WebFontLoader from 'webfontloader';
 declare let $: any;
 
 @Component({
@@ -18,14 +17,6 @@ export class AppComponent {
       headers["user-id"] = "demoUser";
 
       return headers;
-    });
-    WebFontLoader.load({
-      active: () => {
-
-      },
-      custom: {
-        families: ['Roboto-Regular', 'Roboto-Bold', 'Roboto-Light', 'Roboto-Medium']
-      }
     });
   }
 }

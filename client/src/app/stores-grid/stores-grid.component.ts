@@ -1,5 +1,5 @@
 import { Component, Output, OnInit, ViewChild, ElementRef, EventEmitter } from '@angular/core';
-import { IgxGridComponent, IgxColumnComponent, ISortingExpression, SortingDirection, DefaultSortingStrategy } from '@infragistics/igniteui-angular';
+import { IgxGridComponent, IgxColumnComponent, ISortingExpression, SortingDirection, DefaultSortingStrategy } from 'igniteui-angular';
 
 import * as _ from 'lodash';
 import { SampleDataService } from '../sample-data.service';

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { DockManagerComponent } from './dock-manager.component';
 
-import { defineCustomElements } from '@infragistics/igniteui-dockmanager/loader';
+import { defineCustomElements } from 'igniteui-dockmanager/loader';
 defineCustomElements();
 
 describe('DockManagerComponent', () => {
