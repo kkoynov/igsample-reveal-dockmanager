@@ -33,8 +33,8 @@ namespace Server.RevealSDK
 
         public override async Task SaveDashboardAsync(string userId, string dashboardId, Dashboard dashboard)
         {
-			// "~" is added to the saved .rdash file. (Please overwrite manually)
-            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~"+dashboardId);
+            // "~" is added to the saved .rdash file. (Please overwrite manually)
+            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~" + dashboardId);
             using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 (await dashboard.SerializeAsync()).CopyTo(fileStream);

@@ -67,5 +67,20 @@ export class RevealComponent implements OnInit, AfterViewInit, OnDestroy {
     this.revealView.canSaveAs = true;
     this.revealView.canEdit = true;
     this.revealView.showDataBlending = true;
+    this.revealView.serverSideSave = true;
+    this.revealView.onSave = function (rv, saveEvent) {
+      saveEvent.serialize(function (blobValue) {
+        // TODO: save the blob value, for example using a XMLHttpRequest object
+        // to POST to the server
+        console.log("blobValue", blobValue);
+        console.log("SERIALIZED, calling SAVE");
+        saveEvent.saveFinished();
+        //load the saved dashboard immediately
+        $.ig.RVDashboard.loadDashboardFromContainer(blobValue, function (d) {
+          //rv.dashboard = d;
+        });
+        // this.reportService.saveRevealDashboard(blobValue);
+      });
+    };
   }
 }
