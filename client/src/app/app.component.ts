@@ -11,7 +11,12 @@ export class AppComponent {
 
   constructor() {
 
+    // Set the base url of reveal back-end
     $.ig.RevealSdkSettings.setBaseUrl("https://localhost:5001/");
+
+    // The code bellow illustrate how you could provide additional headers
+    // to the requests Reveal Client is sending to the back-end
+    // This is useful to send authentication headers to the backend. 
     $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
       var headers = {};
       headers["user-id"] = "demoUser";
