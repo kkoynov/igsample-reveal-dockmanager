@@ -73,22 +73,7 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
           }
         ]
       },
-      floatingPanes: [
-        {
-          type: IgcDockManagerPaneType.splitPane,
-          orientation: IgcSplitPaneOrientation.horizontal,
-          floatingHeight: 350,
-          floatingWidth: 550,
-          floatingLocation: { x: 200, y: 600 },
-          panes: [
-            {
-              type: IgcDockManagerPaneType.contentPane,
-              contentId: 'floating',
-              header: 'Welcome to Ignite UI'
-            }
-          ]
-        }
-      ]
+      floatingPanes: []
     } as IgcDockManagerLayout;
 
     this.listViewPane = this.findPane({ id: 'listViewPane' }) as IgcTabGroupPane;
@@ -195,7 +180,6 @@ export class DockManagerComponent implements OnInit, AfterViewInit {
   }
 
   async loadRobotoFonts() {
-    console.log("loadRobotoFonts");
     return new Promise<void>((resolve, reject) => {
       WebFontLoader.load({
         active: () => {

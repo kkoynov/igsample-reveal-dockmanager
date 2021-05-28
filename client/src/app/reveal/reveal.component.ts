@@ -22,12 +22,10 @@ export class RevealComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     const dashboardId = 'Analytics.rdash';
 
-    $.ig.RevealUtility.loadDashboard(dashboardId, (dashboard) => {
+    $.ig.RVDashboard.loadDashboard(dashboardId, (dashboard) => {
 
       this.setupRevealView();
       this.hookonVisualizationDataPointClicked()
-      this.revealView.dashboard = dashboard;
-
       this.revealView.dashboard = dashboard;
     },
       (err) => {

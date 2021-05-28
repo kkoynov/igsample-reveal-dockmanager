@@ -5,9 +5,6 @@ using Server.RevealSDK;
 using Reveal.Sdk;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -17,12 +14,9 @@ namespace Server
 {
     public class Startup
     {
-        private string _webRootPath;
-
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _webRootPath = env.WebRootPath;
         }
 
         public IConfiguration Configuration { get; }
@@ -45,16 +39,10 @@ namespace Server
             });
             services.AddRevealServices(new RevealEmbedSettings
             {
-                CachePath = @"C:\Temp2",
                 LocalFileStoragePath = Path.Combine(Directory.GetCurrentDirectory(), "Data")
             }, new RevealSdkContext());
 
             services.AddControllers().AddReveal();
-        }
-
-        protected virtual RevealSdkContextBase CreateSdkContext()
-        {
-            return new RevealSdkContext();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,15 +17,15 @@ namespace Server.Controllers
             if (fileName == null)
                 return Content("filename not present");
 
-            var path = Path.Combine(
-                           Directory.GetCurrentDirectory(),
-                           "Data", fileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Data", fileName);
+
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
+
             return File(memory, "application/json", Path.GetFileName(path));
         }
     }

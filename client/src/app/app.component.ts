@@ -16,7 +16,7 @@ export class AppComponent {
 
     // The code bellow illustrate how you could provide additional headers
     // to the requests Reveal Client is sending to the back-end
-    // This is useful to send authentication headers to the backend. 
+    // This is useful to send authentication headers to the back-end. 
     $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
       var headers = {};
       headers["user-id"] = "demoUser";

@@ -38,7 +38,7 @@ export class SampleDataService {
   }
 
   private errorHandler(err) {
-    console.log('Error occured.', err);
+    console.log('Error occurred.', err);
     return Promise.reject(err.message || err);
   }
 }
