@@ -8,11 +8,8 @@ namespace Server.RevealSDK
 {
 	public class RevealSdkContext : RevealSdkContextBase
     {
-        private string _webRootPath;
-
-        public RevealSdkContext(string webRootPath)
+        public RevealSdkContext()
         {
-            _webRootPath = webRootPath;
         }
 
         public override IRVDataSourceProvider DataSourceProvider => new LocalSampleDataSourceProvider();
@@ -23,10 +20,12 @@ namespace Server.RevealSDK
 
         public override Task<Dashboard> GetDashboardAsync(string dashboardId)
         {
-            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", dashboardId);
+            string currentDirectory = Directory.GetCurrentDirectory();
+
+            var fileName = Path.Combine(currentDirectory, "DashboardFile", dashboardId);
             using (new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
-                return Task.FromResult<Dashboard>(new Dashboard(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
+                return Task.FromResult(new Dashboard(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
             }
         }
 
@@ -34,13 +33,13 @@ namespace Server.RevealSDK
         public override async Task SaveDashboardAsync(string userId, string dashboardId, Dashboard dashboard)
         {
 			// "~" is added to the saved .rdash file. (Please overwrite manually)
-            var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~"+dashboardId);
-            using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-            {
-                (await dashboard.SerializeAsync()).CopyTo(fileStream);
-            }
+            //var fileName = Path.Combine(_webRootPath, "App_Data", "DashboardFile", "~"+dashboardId);
+            //using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            //{
+            //    (await dashboard.SerializeAsync()).CopyTo(fileStream);
+            //}
 
-            return;
+            //return;
         }
 
     }

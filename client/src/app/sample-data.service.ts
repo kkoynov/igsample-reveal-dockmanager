@@ -7,7 +7,7 @@ import * as _ from 'lodash';
   providedIn: 'root'
 })
 export class SampleDataService {
-  private endpoint: string = 'https://localhost:5001/App_Data/RVLocalFiles/';
+  private endpoint: string = 'https://localhost:5001/JsonFile?fileName=';
   private static cache: any = {};
 
   private httpOptions: any = {
@@ -27,16 +27,16 @@ export class SampleDataService {
     }
     else {
       return this.http.get(this.endpoint + filename, this.httpOptions)
-      .toPromise()
-      .then((res) => {
-        const response: any = res;
-        SampleDataService.cache[filename] = response;
-        return response;
-      })
-      .catch(this.errorHandler);
+        .toPromise()
+        .then((res) => {
+          const response: any = res;
+          SampleDataService.cache[filename] = response;
+          return response;
+        })
+        .catch(this.errorHandler);
     }
   }
-  
+
   private errorHandler(err) {
     console.log('Error occured.', err);
     return Promise.reject(err.message || err);

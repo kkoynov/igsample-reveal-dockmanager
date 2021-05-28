@@ -30,6 +30,7 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Filter out the Reveal Embed endpoints from swagger docs.
             services.AddSwaggerGen( o =>
             {
                 o.SwaggerGeneratorOptions.DocInclusionPredicate = (str, desc) => {
@@ -42,19 +43,18 @@ namespace Server
                     return true;
                 }; 
             });
-
             services.AddRevealServices(new RevealEmbedSettings
             {
                 CachePath = @"C:\Temp2",
-                LocalFileStoragePath = Path.Combine(_webRootPath, "App_Data", "RVLocalFiles")
-            }, new RevealSdkContext(_webRootPath));
+                LocalFileStoragePath = Path.Combine(Directory.GetCurrentDirectory(), "Data")
+            }, new RevealSdkContext());
 
             services.AddControllers().AddReveal();
         }
 
         protected virtual RevealSdkContextBase CreateSdkContext()
         {
-            return new RevealSdkContext(_webRootPath);
+            return new RevealSdkContext();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,19 +76,6 @@ namespace Server
             app.UseRouting();
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                OnPrepareResponse = context =>
-                {
-                    // Cache static file for 1 year
-                    if (!string.IsNullOrEmpty(context.Context.Request.Query["v"]))
-                    {
-                        context.Context.Response.Headers.Add("cache-control", new[] { "public,max-age=300" });
-                        context.Context.Response.Headers.Add("Expires", new[] { DateTime.UtcNow.AddMinutes(5).ToString("R") }); // Format RFC1123
-                    }
-                }
-            });
 
             app.UseEndpoints(endpoints =>
             {
